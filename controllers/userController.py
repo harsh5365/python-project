@@ -9,13 +9,16 @@ def index():
     return jsonify([user.serialize for user in users])
 
 def store():
-    name = request.form['name']
-    age = request.form['age']
-    address = request.form['address']
-    user = User(name=name, age=age, address=address)
+    userData = request.get_json()
+    print(userData)
+    username = userData['username']
+    age = userData['age']
+    email = userData['email']
+    gender = userData['gender']
+    user = User(username=username, email=email, age=age, gender=gender)
     db.session.add(user)
     db.session.commit()
-    return redirect(url_for('index'))
+    return jsonify(message= "User Added Successfully")
 
 def show(userId):
     user = User.query.get(userId)
